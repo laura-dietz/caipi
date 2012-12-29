@@ -4,7 +4,7 @@ thorns=true;
 
 diam=25;
 handheight=11;
-handlelength=100;
+handlelength=60;
 tR=4;
 tH=5;
 thornN = 5;
@@ -22,6 +22,14 @@ module thorn() {
 	 );
 }
 
+module ring(innerR, outerR, height) {
+	difference() {
+		cylinder(r=outerR, h=height);
+		translate([0,0,-1]) cylinder(r=innerR, h=height+2);
+	}
+}
+
+
 
 // hand part
 if(hand) difference() {
@@ -36,8 +44,14 @@ if(hand) difference() {
 
 // handle
 
-if(handle) translate([0,0,handheight]) color("red") cylinder(h=handlelength,r=diam/2);
-
+if(handle){
+	difference() {
+		 translate([0,0,handheight]) color("red") cylinder(h=handlelength,r=diam/2);
+		 for(i = [0 : 4: 25]) {
+			translate ([0,0,(handheight+handlelength*0.2+i)]) ring(diam/2-0.5, diam/2+0.5, 1);
+		 }
+	}
+}
 // thorns
 
 
